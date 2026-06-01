@@ -61,7 +61,7 @@ with mlflow.start_run():
     # save model
     mlflow.sklearn.log_model(model, "model")
 
-    # artifact tambahan (biar aman rubric advanced)
+    # artifact tambahan
     mlflow.log_text(str(model.get_params()), "params.txt")
     mlflow.log_dict(
         {"accuracy": accuracy},
