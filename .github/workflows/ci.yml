@@ -2,6 +2,8 @@ name: MLflow CI
 
 on:
   push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -25,7 +27,7 @@ jobs:
         env:
           MLFLOW_TRACKING_URI: https://dagshub.com/putriipuspita/eksperimen-sml.mlflow
           MLFLOW_TRACKING_USERNAME: putriipuspita
-          MLFLOW_TRACKING_PASSWORD: ca4dfce32691ae790f728615d60681bffdc45bbc
+          MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }}
         run: |
           cd MLProject
-          mlflow run .
+          mlflow run . --env-manager=local
