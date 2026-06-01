@@ -1,11 +1,7 @@
-name: mlflow-env
-channels:
-  - defaults
-dependencies:
-  - python=3.10
-  - pip
-  - pip:
-      - mlflow
-      - scikit-learn
-      - pandas
-      - dagshub
+name: churn-project
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    command: "python modelling.py"
