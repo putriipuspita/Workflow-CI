@@ -4,7 +4,7 @@ build_dependencies:
   - pip
 
 dependencies:
-  - mlflow
+  - mlflow==2.19.0
   - scikit-learn
   - pandas
   - dagshub

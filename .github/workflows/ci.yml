@@ -2,6 +2,8 @@ name: MLflow CI
 
 on:
   push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -17,12 +19,13 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Install MLflow
+      - name: Install dependencies
         run: |
-          pip install mlflow scikit-learn pandas dagshub
+          pip install mlflow==2.19.0 scikit-learn pandas dagshub
 
       - name: Run MLflow Project
         env:
+          DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
           MLFLOW_TRACKING_URI: https://dagshub.com/putriipuspita/eksperimen-sml.mlflow
           MLFLOW_TRACKING_USERNAME: putriipuspita
           MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }}

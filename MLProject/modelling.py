@@ -14,13 +14,12 @@ from sklearn.metrics import accuracy_score
 # =====================================================
 # DAGSHUB CONFIG
 # =====================================================
+# dagshub
 dagshub.init(
     repo_owner="putriipuspita",
     repo_name="eksperimen-sml",
     mlflow=True
 )
-
-mlflow.set_tracking_uri("https://dagshub.com/putriipuspita/eksperimen-sml.mlflow")
 
 mlflow.set_experiment("random-forest-basic")
 
