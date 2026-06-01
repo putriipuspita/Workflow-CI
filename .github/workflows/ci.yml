@@ -40,7 +40,8 @@ jobs:
       - name: Build Docker Image from MLflow
         run: |
           RUN_ID=$(cat MLProject/run_id.txt)
-          mlflow models build-docker -m runs:/$RUN_ID/model -n churn-model
+          mlflow models generate-dockerfile -m runs:/$RUN_ID/model -d docker_output
+          docker build -t churn-model ./docker_output
 
       - name: Push Docker Image
         run: |
