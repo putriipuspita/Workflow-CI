@@ -10,6 +10,12 @@ jobs:
   train:
     runs-on: ubuntu-latest
 
+    env:
+      DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+      MLFLOW_TRACKING_URI: https://dagshub.com/putriipuspita/eksperimen-sml.mlflow
+      MLFLOW_TRACKING_USERNAME: putriipuspita
+      MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,22 +30,17 @@ jobs:
           pip install mlflow==2.19.0 scikit-learn pandas dagshub
 
       - name: Run MLflow Project
-        env:
-          DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
-          MLFLOW_TRACKING_URI: https://dagshub.com/putriipuspita/eksperimen-sml.mlflow
-          MLFLOW_TRACKING_USERNAME: putriipuspita
-          MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }}
         run: |
           cd MLProject
           mlflow run . --env-manager=local --experiment-name="random-forest-basic"
 
-            - name: Login Docker Hub
+      - name: Login Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build Docker Image from MLflow
         run: |
-          pip install mlflow
-          mlflow models build-docker -m runs:/. /model -n churn-model
+          RUN_ID=$(cat MLProject/run_id.txt)
+          mlflow models build-docker -m runs:/$RUN_ID/model -n churn-model
 
       - name: Push Docker Image
         run: |

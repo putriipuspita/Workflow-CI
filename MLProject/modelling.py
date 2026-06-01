@@ -43,7 +43,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 # =====================================================
 # TRAINING MODEL
 # =====================================================
-with mlflow.start_run():
+with mlflow.start_run() as run:
 
     model = RandomForestClassifier(random_state=42)
     model.fit(X_train, y_train)
@@ -69,3 +69,7 @@ with mlflow.start_run():
     )
 
     print("Accuracy:", accuracy)
+
+    # write run_id to file
+    with open("run_id.txt", "w") as f:
+        f.write(run.info.run_id)
