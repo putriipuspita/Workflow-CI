@@ -23,8 +23,9 @@ jobs:
 
       - name: Run MLflow Project
         env:
-          MLFLOW_TRACKING_URI: https://dagshub.com/putriipuspita/eksperimen-sml
+          MLFLOW_TRACKING_URI: https://dagshub.com/putriipuspita/eksperimen-sml.mlflow
           MLFLOW_TRACKING_USERNAME: putriipuspita
           MLFLOW_TRACKING_PASSWORD: ca4dfce32691ae790f728615d60681bffdc45bbc
         run: |
-          mlflow run MLProject
+          cd MLProject
+          mlflow run .
