@@ -5,23 +5,16 @@ import os
 import pandas as pd
 import mlflow
 import mlflow.sklearn
-import dagshub
 
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
 # =====================================================
-# DAGSHUB CONFIG
+# MLFLOW AUTO LOGGING
 # =====================================================
-# dagshub
-dagshub.init(
-    repo_owner="putriipuspita",
-    repo_name="eksperimen-sml",
-    mlflow=True
-)
-
 mlflow.set_experiment("random-forest-basic")
+mlflow.autolog()
 
 # =====================================================
 # LOAD DATASET
@@ -52,24 +45,8 @@ with mlflow.start_run() as run:
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
 
-    # =================================================
-    # MANUAL LOGGING
-    # =================================================
-    mlflow.log_param("model", "RandomForest")
-    mlflow.log_metric("accuracy", accuracy)
-
-    # save model
-    mlflow.sklearn.log_model(model, "model")
-
-    # artifact tambahan
-    mlflow.log_text(str(model.get_params()), "params.txt")
-    mlflow.log_dict(
-        {"accuracy": accuracy},
-        "metrics.json"
-    )
-
     print("Accuracy:", accuracy)
 
-    # write run_id to file
+    # write run_id to file (penting untuk CI/CD)
     with open("run_id.txt", "w") as f:
         f.write(run.info.run_id)
